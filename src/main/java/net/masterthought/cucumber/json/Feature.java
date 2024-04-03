@@ -68,6 +68,25 @@ public class Feature implements Reportable, Durationable {
         return elements;
     }
 
+    public void removeElements(Element ele) {
+        List<Element> newElementList = new ArrayList<>();
+        for(Element element : elements){
+            if(!((element.getName()).equalsIgnoreCase(ele.getName()))){
+                newElementList.add(element);
+            }
+        }
+        //List<Element> newElementList = Arrays.asList(elements.clone());
+        //newElementList.remove(ele);
+        /*for(Element element: newElementList){
+            if((element.getName()).equalsIgnoreCase(ele.getName())){
+                newElementList.remove(element);
+            }
+        }*/
+        elements = new Element[newElementList.size()];
+        elements = newElementList.toArray(elements);
+    }
+
+
     public String getReportFileName() {
         return reportFileName;
     }

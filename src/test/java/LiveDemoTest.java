@@ -23,7 +23,9 @@ class LiveDemoTest {
     void generateDemoReport() throws IOException {
         File reportOutputDirectory = new File("target/demo");
         List<String> jsonFiles = new ArrayList<>();
-        jsonFiles.add("src/test/resources/json/sample.json");
+//        jsonFiles.add("src/test/resources/json/sample.json");
+        jsonFiles.add("src/test/resources/json/dgeorge.json");
+        jsonFiles.add("src/test/resources/json/cucumber-rerun.json");
 
         String buildNumber = "101";
         String projectName = "Live Demo Project";

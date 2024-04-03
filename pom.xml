@@ -66,56 +66,56 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <id>damianszczepanik</id>
-            <name>Damian Szczepanik</name>
-            <email>damianszczepanik@github</email>
-        </developer>
-        <developer>
-            <id>kingsleyh</id>
-            <name>Kingsley Hendrickse</name>
-            <email>kingsley.hendrickse@gmail.com</email>
-        </developer>
-    </developers>
+<!--    <developers>-->
+<!--        <developer>-->
+<!--            <id>damianszczepanik</id>-->
+<!--            <name>Damian Szczepanik</name>-->
+<!--            <email>damianszczepanik@github</email>-->
+<!--        </developer>-->
+<!--        <developer>-->
+<!--            <id>kingsleyh</id>-->
+<!--            <name>Kingsley Hendrickse</name>-->
+<!--            <email>kingsley.hendrickse@gmail.com</email>-->
+<!--        </developer>-->
+<!--    </developers>-->
 
     <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <!-- will be set by the release plugin upon performing
-                         mvn release:clean release:prepare release:perform -->
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
+<!--        <profile>-->
+<!--            <id>release-sign-artifacts</id>-->
+<!--            <activation>-->
+<!--                <property>-->
+<!--                    &lt;!&ndash; will be set by the release plugin upon performing-->
+<!--                         mvn release:clean release:prepare release:perform &ndash;&gt;-->
+<!--                    <name>performRelease</name>-->
+<!--                    <value>true</value>-->
+<!--                </property>-->
+<!--            </activation>-->
 
-            <properties>
-                <gpg.keyname>0738FA8F</gpg.keyname>
-                <release.username>Damian Szczepanik</release.username>
-            </properties>
+<!--            <properties>-->
+<!--                <gpg.keyname>0738FA8F</gpg.keyname>-->
+<!--                <release.username>Damian Szczepanik</release.username>-->
+<!--            </properties>-->
 
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+<!--                        <version>3.1.0</version>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>sign-artifacts</id>-->
+<!--                                <phase>verify</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>sign</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
 
-        </profile>
+<!--        </profile>-->
 
         <profile>
             <id>jdk17on</id>

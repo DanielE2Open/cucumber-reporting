@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.InjectableValues;
@@ -17,6 +18,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.masterthought.cucumber.json.Feature;
+import net.masterthought.cucumber.json.Element;
+import net.masterthought.cucumber.json.Step;
 import net.masterthought.cucumber.reducers.ReducingMethod;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
@@ -69,6 +72,17 @@ public class ReportParser {
                 continue;
             }
             Feature[] features = parseForFeature(jsonFile);
+            boolean rerunFlag = false;
+            for(String fileName : jsonFiles){
+                if(fileName.contains("rerun.json")){
+                    rerunFlag = true;
+                }
+            }
+            if(rerunFlag){
+                features = parseForFeature(jsonFile,true);
+            }else {
+                features = parseForFeature(jsonFile);
+            }
             LOG.info("File '{}' contains {} feature(s)", jsonFile, features.length);
             featureResults.addAll(Arrays.asList(features));
         }
@@ -102,6 +116,43 @@ public class ReportParser {
         } catch (JsonMappingException e) {
             throw new ValidationException(
                     String.format("File '%s' is not a valid Cucumber report! %s", jsonFile, e.getMessage()), e.getCause());
+        } catch (IOException e) {
+            // IO problem - stop generating and re-throw the problem
+            throw new ValidationException(e);
+        }
+    }
+
+    private Feature[] parseForFeature(String jsonFile, boolean reRunFlag) {
+        try (Reader reader = new InputStreamReader(new FileInputStream(jsonFile), StandardCharsets.UTF_8)) {
+            Feature[] features = mapper.readValue(reader, Feature[].class);
+            if(!(jsonFile.contains("rerun")))
+                for(Feature feature : features){
+                    for(Element element : feature.getElements()){
+                        boolean remove = false;
+                        for(Step step : element.getSteps()){
+                            if(step.getResult().getStatus().isPassed()){
+                                continue;
+                            }else{
+                                remove = true;
+                                break;
+                            }
+                        }
+                        if(remove) {
+                            feature.removeElements(element);
+                        }
+                    }
+                }
+            if (ArrayUtils.isEmpty(features)) {
+                LOG.info("File '{0}' does not contain features", jsonFile);
+            }
+            String jsonFileName = extractQualifier(jsonFile);
+            Arrays.stream(features).forEach(feature ->
+                    feature.setQualifier(StringUtils.defaultString(configuration.getQualifier(jsonFileName), jsonFileName))
+            );
+
+            return features;
+        } catch (JsonMappingException e) {
+            throw new ValidationException(String.format("File '%s' is not proper Cucumber report!", jsonFile), e);
         } catch (IOException e) {
             // IO problem - stop generating and re-throw the problem
             throw new ValidationException(e);

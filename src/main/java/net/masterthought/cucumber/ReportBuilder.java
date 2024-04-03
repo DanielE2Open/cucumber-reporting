@@ -94,7 +94,7 @@ public class ReportBuilder {
             reportParser.parseClassificationsFiles(configuration.getClassificationFiles());
 
             // parse json files for results
-            List<Feature> features = reportParser.parseJsonFiles(jsonFiles);
+            List<Feature> features = reportParser.parseJsonFiles(jsonFiles);  //get all the features in the jsons file passed
             reportResult = new ReportResult(features, configuration);
             Reportable reportable = reportResult.getFeatureReport();
 
